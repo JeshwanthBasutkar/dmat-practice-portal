@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Dashboard | dMAT Exam Prep 2026</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body class="text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 cursor-pointer">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                </div>
+                <div>
+                    <span
+                        class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-brand-400 bg-clip-text text-transparent">
+                        dMAT <span class="text-brand-400 font-semibold">Prep 2026</span>
+                    </span>
+                    <span class="block text-[10px] uppercase font-bold tracking-widest text-amber-400 -mt-1">
+                        <i class="fa-regular fa-calendar-check mr-1"></i>Exam Date: 26 Sep 2026
+                    </span>
+                </div>
+            </a>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="openModal('leaderboard-modal')"
+                    class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white transition flex items-center space-x-1.5 rounded-lg hover:bg-slate-800/60">
+                    <i class="fa-solid fa-trophy text-amber-400"></i>
+                    <span class="hidden sm:inline">Leaderboard</span>
+                </button>
+
+                <div id="auth-header-container" class="flex items-center space-x-2"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Welcome & Stats Banner -->
+        <div
+            class="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-amber-500/30">
+            <div class="space-y-2">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-brand-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+                            Candidate Hub — <span id="dash-username" class="text-brand-400">Candidate</span>
+                        </h2>
+                        <p class="text-xs text-slate-300">Target Exam Date: <strong class="text-amber-400">26 September
+                                2026</strong> | Select a practice module or start official test.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="glass-card px-4 py-2.5 rounded-2xl border border-slate-700 flex items-center space-x-3">
+                    <i class="fa-solid fa-star text-amber-400 text-lg"></i>
+                    <div>
+                        <span class="block text-[10px] uppercase font-semibold text-slate-400">Total Score</span>
+                        <span id="dash-score" class="text-lg font-black text-white">0 pts</span>
+                    </div>
+                </div>
+
+                <div class="glass-card px-4 py-2.5 rounded-2xl border border-slate-700 flex items-center space-x-3">
+                    <i class="fa-solid fa-fire text-amber-500 text-lg"></i>
+                    <div>
+                        <span class="block text-[10px] uppercase font-semibold text-slate-400">Current Streak</span>
+                        <span id="dash-streak" class="text-lg font-black text-amber-400">0 🔥</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Official Timed Test Banner Card -->
+        <div
+            class="glass-panel p-6 sm:p-8 rounded-3xl border-2 border-emerald-500/60 shadow-2xl relative overflow-hidden bg-gradient-to-r from-emerald-950/60 via-slate-900/90 to-cyan-950/60 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-3 max-w-2xl">
+                <div
+                    class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-extrabold uppercase">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Official Timed Exam Test Engine</span>
+                </div>
+                <h3 class="text-3xl font-black text-white">Take Full Official dMAT Test</h3>
+                <p class="text-sm text-slate-300">
+                    Test yourself under official exam conditions: <strong>60 total questions</strong> (20 per section),
+                    <strong>25 minutes per section</strong>, <strong>2-minute break sessions</strong>, & instant
+                    comprehensive analytics!
+                </p>
+            </div>
+
+            <a href="/test"
+                class="px-8 py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-accent-cyan hover:opacity-95 text-white font-extrabold text-lg rounded-2xl shadow-xl shadow-emerald-500/30 transition transform hover:scale-105 flex items-center space-x-3 flex-shrink-0">
+                <i class="fa-solid fa-circle-play text-xl"></i>
+                <span>Start Timed Exam</span>
+            </a>
+        </div>
+
+        <!-- Practice Topics Grid -->
+        <div class="space-y-4">
+            <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                <i class="fa-solid fa-book-open-reader text-brand-400"></i>
+                <span>dMAT Practice Topics & Modules</span>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Topic 1: Latin Square -->
+                <a href="/practice/latin"
+                    class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-700/80 hover:border-brand-500/80 transition-all cursor-pointer group shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-border-all"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-brand-900/60 text-brand-400 text-xs font-bold rounded-full border border-brand-500/30">
+                                Topic 1 • 5 Points
+                            </span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-extrabold text-white group-hover:text-brand-300 transition-colors">
+                                5×5 Latin Square Matrix
+                            </h4>
+                            <p class="text-sm text-slate-300 mt-2">
+                                Deduce missing symbols (A-E) in a 5×5 matrix using row and column cross-elimination rules.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-6 flex items-center text-brand-400 font-bold text-sm group-hover:translate-x-2 transition-transform">
+                        <span>Start Latin Practice</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- Topic 2: Math Equations -->
+                <a href="/practice/math"
+                    class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-700/80 hover:border-accent-cyan/80 transition-all cursor-pointer group shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-accent-cyan to-accent-purple flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-cyan-950 text-accent-cyan text-xs font-bold rounded-full border border-cyan-800">
+                                Topic 2 • 5 Points
+                            </span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-extrabold text-white group-hover:text-cyan-300 transition-colors">
+                                Mathematical Equations System
+                            </h4>
+                            <p class="text-sm text-slate-300 mt-2">
+                                Solve systems of 4 equations to determine integer values for variables A, B, C, and D.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-6 flex items-center text-accent-cyan font-bold text-sm group-hover:translate-x-2 transition-transform">
+                        <span>Start Math Practice</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- Topic 3: Figure Sequence -->
+                <a href="/practice/figure"
+                    class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-700/80 hover:border-amber-500/80 transition-all cursor-pointer group shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-brand-600 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-cubes-stacked"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-amber-950 text-amber-400 text-xs font-bold rounded-full border border-amber-800">
+                                Topic 3 • 5 Points
+                            </span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-extrabold text-white group-hover:text-amber-300 transition-colors">
+                                Figure Sequence Engine
+                            </h4>
+                            <p class="text-sm text-slate-300 mt-2">
+                                Deduce 4×4 procedural symbol transformations to find missing Figure 5 and Figure 6.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-6 flex items-center text-amber-400 font-bold text-sm group-hover:translate-x-2 transition-transform">
+                        <span>Start Figure Sequence</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- Topic 4 / GAM: General Academic Module -->
+                <div onclick="openModal('gam-modal')"
+                    class="glass-panel p-6 sm:p-8 rounded-3xl border border-purple-500/60 hover:border-purple-400 transition-all cursor-pointer group shadow-xl relative overflow-hidden flex flex-col justify-between bg-gradient-to-b from-purple-950/40 via-slate-900/80 to-slate-900/90">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-book-bookmark"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-purple-950/90 text-purple-300 text-xs font-extrabold rounded-full border border-purple-500/50 flex items-center space-x-1.5 shadow-sm">
+                                <i class="fa-solid fa-clock text-[11px] text-amber-400 animate-pulse"></i>
+                                <span>Coming Soon</span>
+                            </span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-extrabold text-white group-hover:text-purple-300 transition-colors">
+                                GAM [General Academic Module]
+                            </h4>
+                            <p class="text-sm text-slate-300 mt-2">
+                                Advanced academic suite & comprehensive general evaluation module for candidates.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-6 flex items-center text-purple-400 font-bold text-sm group-hover:translate-x-2 transition-transform">
+                        <span>Open GAM Section</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Leaderboard Preview -->
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl shadow-xl">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700/50">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-amber-400"></i>
+                    <span>Candidate Leaderboard Rankings</span>
+                </h3>
+                <button onclick="fetchLeaderboard(); openModal('leaderboard-modal');"
+                    class="text-xs text-brand-400 hover:text-brand-300 font-semibold flex items-center gap-1">
+                    <span>View Full Ranks</span>
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </button>
+            </div>
+
+            <div id="dash-leaderboard-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+    </main>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div
+            class="glass-panel rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative border border-slate-700/80 max-h-[90vh] flex flex-col">
+            <button onclick="closeModal('leaderboard-modal')"
+                class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-3 mb-6">
+                <div
+                    class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-extrabold text-white">Global Candidate Leaderboard</h3>
+                    <p class="text-xs text-slate-400">Ranked by score (5 pts per solved question)</p>
+                </div>
+            </div>
+            <div class="overflow-y-auto flex-grow pr-1">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs uppercase bg-slate-900/80 text-slate-400 sticky top-0">
+                        <tr>
+                            <th class="px-4 py-3 rounded-l-xl">Rank</th>
+                            <th class="px-4 py-3">Candidate</th>
+                            <th class="px-4 py-3 text-center">Puzzles Solved</th>
+                            <th class="px-4 py-3 text-center">Best Streak</th>
+                            <th class="px-4 py-3 text-right rounded-r-xl">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="full-leaderboard-tbody" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAM (General Academic Module) Modal -->
+    <div id="gam-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+        <div
+            class="glass-panel rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative border-2 border-purple-500/60 bg-gradient-to-b from-purple-950/90 via-slate-900 to-slate-950 flex flex-col text-center space-y-6">
+            <button onclick="closeModal('gam-modal')"
+                class="absolute top-5 right-5 text-slate-400 hover:text-white transition w-9 h-9 rounded-full bg-slate-800/80 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center text-white text-3xl shadow-xl shadow-purple-500/30">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="space-y-2">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 text-xs font-extrabold uppercase tracking-wide">
+                    <i class="fa-solid fa-layer-group text-amber-400"></i>
+                    <span>GAM [General Academic Module]</span>
+                </div>
+                <h3 class="text-2xl font-black text-white">Module Status Notice</h3>
+            </div>
+
+            <!-- Highlighted Notice Box -->
+            <div class="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-amber-500/20 via-purple-600/30 to-brand-500/20 border-2 border-amber-400/90 shadow-2xl backdrop-blur-sm relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-24 h-24 bg-amber-400/10 rounded-full blur-xl pointer-events-none"></div>
+                <p class="text-lg sm:text-xl font-extrabold text-amber-300 leading-relaxed tracking-wide drop-shadow-md">
+                    "Coming soon we are continously Working on it until that practice core module "
+                </p>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closeModal('gam-modal')"
+                    class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-brand-600 via-purple-600 to-accent-cyan hover:opacity-95 text-white font-extrabold text-base rounded-2xl shadow-xl shadow-purple-600/30 transition transform hover:scale-105 inline-flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Return to Core Practice Modules</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+</body>
+
+</html>

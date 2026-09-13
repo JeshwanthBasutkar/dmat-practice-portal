@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math System Practice | dMAT 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-brand-400 bg-clip-text text-transparent">
+                        dMAT <span class="text-brand-400 font-semibold">Prep 2026</span>
+                    </span>
+                    <span class="block text-[10px] uppercase font-bold tracking-widest text-amber-400 -mt-1">
+                        <i class="fa-regular fa-calendar-check mr-1"></i>Exam Date: 26 Sep 2026
+                    </span>
+                </div>
+            </a>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="openModal('leaderboard-modal')" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white transition flex items-center space-x-1.5 rounded-lg hover:bg-slate-800/60">
+                    <i class="fa-solid fa-trophy text-amber-400"></i>
+                    <span class="hidden sm:inline">Leaderboard</span>
+                </button>
+
+                <div id="auth-header-container" class="flex items-center space-x-2"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Practice Section -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <a href="/dashboard" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-sm font-semibold transition border border-slate-700 flex items-center space-x-2">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+
+            <div class="flex items-center space-x-2 text-xs font-semibold text-accent-cyan bg-cyan-950/80 px-3 py-1.5 rounded-full border border-cyan-800">
+                <i class="fa-solid fa-coins"></i>
+                <span>Reward: 5 Points / Solved System</span>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/50">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-accent-cyan"></i>
+                        <span>System of Mathematical Equations</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Determine the integer values for variables <strong class="text-accent-cyan">A, B, C, and D</strong> that satisfy all 4 equations.</p>
+                </div>
+                <button onclick="fetchMathPuzzle()" title="Generate New Equations System" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center justify-center border border-slate-700">
+                    <i class="fa-solid fa-rotate text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Equations Card -->
+            <div class="bg-slate-950/70 p-6 rounded-2xl border border-slate-800 mb-6">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Equations System:</h4>
+                <div id="equations-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+            </div>
+
+            <!-- Inputs A, B, C, D -->
+            <div class="space-y-4 max-w-lg mx-auto">
+                <label class="block text-center text-xs font-semibold uppercase tracking-wider text-slate-400">Enter Variable Values</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-700 text-center">
+                        <span class="block text-xs font-bold text-accent-cyan mb-1">Variable A</span>
+                        <input type="number" id="math-val-A" placeholder="A" class="w-full bg-slate-950 border border-slate-700 rounded-xl py-2 text-center text-xl font-bold text-white focus:outline-none focus:border-accent-cyan">
+                    </div>
+
+                    <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-700 text-center">
+                        <span class="block text-xs font-bold text-accent-cyan mb-1">Variable B</span>
+                        <input type="number" id="math-val-B" placeholder="B" class="w-full bg-slate-950 border border-slate-700 rounded-xl py-2 text-center text-xl font-bold text-white focus:outline-none focus:border-accent-cyan">
+                    </div>
+
+                    <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-700 text-center">
+                        <span class="block text-xs font-bold text-accent-cyan mb-1">Variable C</span>
+                        <input type="number" id="math-val-C" placeholder="C" class="w-full bg-slate-950 border border-slate-700 rounded-xl py-2 text-center text-xl font-bold text-white focus:outline-none focus:border-accent-cyan">
+                    </div>
+
+                    <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-700 text-center">
+                        <span class="block text-xs font-bold text-accent-cyan mb-1">Variable D</span>
+                        <input type="number" id="math-val-D" placeholder="D" class="w-full bg-slate-950 border border-slate-700 rounded-xl py-2 text-center text-xl font-bold text-white focus:outline-none focus:border-accent-cyan">
+                    </div>
+                </div>
+
+                <button onclick="submitMathAnswers()"
+                    class="w-full py-3.5 mt-4 font-bold text-white bg-gradient-to-r from-accent-cyan via-brand-600 to-accent-purple hover:opacity-95 transition rounded-xl shadow-lg shadow-cyan-500/20 flex items-center justify-center space-x-2 text-lg">
+                    <span>Submit Equations Solution</span>
+                    <i class="fa-solid fa-check text-sm"></i>
+                </button>
+            </div>
+
+            <div id="math-feedback-banner" class="hidden mt-6 p-4 rounded-xl text-center text-sm font-semibold transition-all"></div>
+        </div>
+    </main>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="glass-panel rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative border border-slate-700/80 max-h-[90vh] flex flex-col">
+            <button onclick="closeModal('leaderboard-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-extrabold text-white">Global Candidate Leaderboard</h3>
+                    <p class="text-xs text-slate-400">Ranked by score (5 pts per solved question)</p>
+                </div>
+            </div>
+            <div class="overflow-y-auto flex-grow pr-1">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs uppercase bg-slate-900/80 text-slate-400 sticky top-0">
+                        <tr>
+                            <th class="px-4 py-3 rounded-l-xl">Rank</th>
+                            <th class="px-4 py-3">Candidate</th>
+                            <th class="px-4 py-3 text-center">Puzzles Solved</th>
+                            <th class="px-4 py-3 text-center">Best Streak</th>
+                            <th class="px-4 py-3 text-right rounded-r-xl">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="full-leaderboard-tbody" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/math.js"></script>
+</body>
+</html>

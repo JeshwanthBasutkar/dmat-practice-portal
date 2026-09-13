@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dMAT Exam Practice Portal | Exam Date: 26 Sep 2026</title>
+    <meta name="description"
+        content="Official dMAT Exam Practice Platform for the upcoming exam on September 26, 2026. Master the Core Module (Latin Squares, Math Equations, Figure Sequences) and the Subject Module!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body class="text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-3 cursor-pointer">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-accent-cyan to-accent-purple flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                </div>
+                <div>
+                    <span
+                        class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-brand-400 bg-clip-text text-transparent">
+                        dMAT <span class="text-brand-400 font-semibold">Prep 2026</span>
+                    </span>
+                    <span class="block text-[10px] uppercase font-bold tracking-widest text-amber-400 -mt-1">
+                        <i class="fa-regular fa-calendar-check mr-1"></i>Exam Date: 26 Sep 2026
+                    </span>
+                </div>
+            </a>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="openModal('leaderboard-modal')"
+                    class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white transition flex items-center space-x-1.5 rounded-lg hover:bg-slate-800/60">
+                    <i class="fa-solid fa-trophy text-amber-400"></i>
+                    <span class="hidden sm:inline">Leaderboard</span>
+                </button>
+
+                <div id="auth-header-container" class="flex items-center space-x-2">
+                    <a href="/login"
+                        class="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-cyan transition rounded-xl shadow-lg hover:opacity-90">
+                        Sign In / Register
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        <section class="space-y-12">
+            <div class="text-center max-w-4xl mx-auto pt-4 space-y-6">
+                <div
+                    class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 via-brand-500/20 to-accent-cyan/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-wider shadow-lg">
+                    <i class="fa-solid fa-calendar-day text-amber-400 text-sm"></i>
+                    <span>Official Practice Portal for dMAT Exam — <strong>September 26, 2026</strong></span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
+                    Ace Your <span
+                        class="bg-gradient-to-r from-amber-400 via-brand-400 to-accent-cyan bg-clip-text text-transparent">dMAT
+                        Exam</span><br>
+                    Held on <span class="text-amber-400">26 September 2026</span>
+                </h1>
+
+                <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto">
+                    Master the full 180-minute exam. Train your cognitive skills for the <strong>Core Module</strong>
+                    (Figure Sequences, Math Equations, Latin Squares) and apply critical reasoning for the
+                    <strong>General Academic Module</strong>.
+                </p>
+
+                <!-- Countdown Timer -->
+                <div class="glass-panel max-w-xl mx-auto p-4 sm:p-6 rounded-3xl border border-amber-500/30 shadow-2xl">
+                    <span class="block text-xs uppercase font-extrabold tracking-widest text-slate-400 mb-3">
+                        <i class="fa-solid fa-hourglass-half text-amber-400 mr-1.5 animate-pulse"></i>Countdown to dMAT
+                        Exam (26 Sep 2026)
+                    </span>
+                    <div id="exam-countdown" class="grid grid-cols-4 gap-3 text-center">
+                        <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
+                            <span id="cnt-days" class="block text-2xl sm:text-3xl font-black text-amber-400">--</span>
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Days</span>
+                        </div>
+                        <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
+                            <span id="cnt-hours" class="block text-2xl sm:text-3xl font-black text-cyan-400">--</span>
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Hours</span>
+                        </div>
+                        <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
+                            <span id="cnt-mins" class="block text-2xl sm:text-3xl font-black text-brand-400">--</span>
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Mins</span>
+                        </div>
+                        <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
+                            <span id="cnt-secs" class="block text-2xl sm:text-3xl font-black text-emerald-400">--</span>
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Secs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start Action Button -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                    <button onclick="startInstantPractice()"
+                        class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-600 via-indigo-600 to-accent-cyan hover:from-brand-500 hover:to-cyan-400 text-white font-extrabold text-lg rounded-2xl shadow-xl shadow-brand-500/30 transition transform hover:-translate-y-0.5 flex items-center justify-center space-x-3">
+                        <i class="fa-solid fa-play text-sm"></i>
+                        <span>Start Timed Drill (25 Min)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Features Showcase -->
+            <div class="pt-6 space-y-6">
+                <div class="text-center">
+                    <h2 class="text-2xl font-extrabold text-white">dMAT Exam Modules & Practice Engines</h2>
+                    <p class="text-xs text-slate-400 mt-1">Everything you need to build speed and accuracy across both
+                        90-minute modules.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1: Latin Squares -->
+                    <div
+                        class="glass-panel p-4 rounded-2xl border border-slate-700/60 feature-img-card flex flex-col items-center">
+                        <div
+                            class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 bg-slate-900 border border-slate-800 flex items-center justify-center text-5xl text-amber-400 shadow-inner">
+                            <i class="fa-solid fa-table-cells"></i>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">Core: Latin Squares</h4>
+                        <p class="text-xs text-slate-400 text-center mt-1">Deduce missing symbols across 5×5 rows &
+                            columns using cross-elimination.</p>
+                    </div>
+
+                    <!-- Card 2: Mathematical Equations -->
+                    <div
+                        class="glass-panel p-4 rounded-2xl border border-slate-700/60 feature-img-card flex flex-col items-center">
+                        <div
+                            class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 bg-slate-900 border border-slate-800 flex items-center justify-center text-5xl text-brand-400 shadow-inner">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">Core: Math Equations</h4>
+                        <p class="text-xs text-slate-400 text-center mt-1">Solve simultaneous algebraic systems mentally
+                            without scratch paper.</p>
+                    </div>
+
+                    <!-- Card 3: Figure Sequences -->
+                    <div
+                        class="glass-panel p-4 rounded-2xl border border-slate-700/60 feature-img-card flex flex-col items-center">
+                        <div
+                            class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 bg-slate-900 border border-slate-800 flex items-center justify-center text-5xl text-cyan-400 shadow-inner">
+                            <i class="fa-solid fa-shapes"></i>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">Core: Figure Sequences</h4>
+                        <p class="text-xs text-slate-400 text-center mt-1">Track spatial movements, boundaries, and
+                            visual patterns across matrices.</p>
+                    </div>
+
+                    <!-- Card 4: Subject Module -->
+                    <div
+                        class="glass-panel p-4 rounded-2xl border border-slate-700/60 feature-img-card flex flex-col items-center">
+                        <div
+                            class="w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 bg-slate-900 border border-slate-800 flex items-center justify-center text-5xl text-indigo-400 shadow-inner">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">Subject Module (GAM)</h4>
+                        <p class="text-xs text-slate-400 text-center mt-1">Master applied problem-solving in vectors,
+                            hydrostatics, and empirical research.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div
+            class="glass-panel rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative border border-slate-700/80 max-h-[90vh] flex flex-col">
+            <button onclick="closeModal('leaderboard-modal')"
+                class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-3 mb-6">
+                <div
+                    class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-extrabold text-white">Global Candidate Leaderboard</h3>
+                    <p class="text-xs text-slate-400">Ranked by score (5 pts per solved question)</p>
+                </div>
+            </div>
+            <div class="overflow-y-auto flex-grow pr-1">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs uppercase bg-slate-900/80 text-slate-400 sticky top-0">
+                        <tr>
+                            <th class="px-4 py-3 rounded-l-xl">Rank</th>
+                            <th class="px-4 py-3">Candidate</th>
+                            <th class="px-4 py-3 text-center">Puzzles Solved</th>
+                            <th class="px-4 py-3 text-center">Best Streak</th>
+                            <th class="px-4 py-3 text-right rounded-r-xl">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="full-leaderboard-tbody" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-6 border-t border-slate-800 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>dMAT Exam Practice Portal &copy; 2026 | Target Exam Date: 26 September 2026</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/common.js"></script>
+</body>
+
+</html>

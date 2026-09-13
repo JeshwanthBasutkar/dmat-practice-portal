@@ -1,0 +1,12 @@
+{
+  "difficulty": "high",
+  "answer_1": 2,
+  "answer_2": 6,
+  "seed": null,
+  "rules": [
+    "Symbol 1 combines movement, boundary handling, rotation and alternating colour.",
+    "Symbol 2 moves horizontally with bouncing, rotates, and cycles through colours.",
+    "Symbol 3 moves diagonally with boundary bouncing.",
+    "Symbol 4 moves around the perimeter and changes colour cyclically."
+  ]
+}

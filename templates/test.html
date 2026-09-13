@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Timed Exam Test | dMAT 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col font-sans bg-slate-950 selection:bg-brand-500 selection:text-white">
+
+    <!-- Loading Screen -->
+    <div id="test-loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 p-4 space-y-4">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 via-accent-cyan to-accent-purple flex items-center justify-center animate-bounce text-white text-2xl shadow-2xl">
+            <i class="fa-solid fa-stopwatch"></i>
+        </div>
+        <div class="text-center space-y-2">
+            <h3 class="text-2xl font-black text-white">Generating Official dMAT Test Exam...</h3>
+            <span class="block text-xs font-semibold text-slate-400">Loading 60 procedural questions across 3 timed sections (25 mins per section).</span>
+        </div>
+        <div class="flex items-center space-x-2 text-cyan-400 text-sm font-bold">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <span>Please wait...</span>
+        </div>
+    </div>
+
+    <!-- Main Exam Interface -->
+    <div id="test-exam-interface" class="hidden flex flex-col min-h-screen">
+        
+        <!-- Sticky Header with Top Right Submit Button -->
+        <header class="sticky top-0 z-40 glass-panel border-b border-slate-700/60 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                
+                <div class="flex items-center space-x-3">
+                    <a href="/dashboard" class="flex items-center space-x-2 text-slate-300 hover:text-white text-xs font-bold bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span class="hidden sm:inline">Exit Exam</span>
+                    </a>
+                    <span id="test-section-title" class="text-sm sm:text-base font-extrabold text-white">
+                        Section 1: 5×5 Latin Square Matrix
+                    </span>
+                </div>
+
+                <!-- Center 25-Min Section Countdown Timer -->
+                <div class="flex items-center space-x-2 bg-slate-900 border border-slate-700 px-4 py-1.5 rounded-2xl shadow-inner">
+                    <i class="fa-solid fa-clock text-amber-400 text-sm animate-pulse"></i>
+                    <span id="section-timer-display" class="text-lg sm:text-xl font-mono font-black text-amber-400">25:00</span>
+                </div>
+
+                <!-- Top Right Submit Button -->
+                <button id="top-right-submit-btn" onclick="clickTopRightSubmit()" class="px-5 py-2.5 bg-gradient-to-r from-brand-600 to-indigo-600 hover:opacity-95 text-white font-extrabold text-sm rounded-xl shadow-lg transition">
+                    Submit Section 1 →
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Question Area -->
+        <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28">
+            <div id="test-question-content" class="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-700/80">
+                <!-- Dynamic active question -->
+            </div>
+        </main>
+
+        <!-- Bottom Fixed Linear Line Question Navigation Bar (1 to 20) -->
+        <footer class="fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-slate-700/60 py-3 px-4 shadow-2xl">
+            <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400 hidden sm:inline">Questions (1-20):</span>
+                
+                <div id="bottom-linear-question-bar" class="flex items-center space-x-2 overflow-x-auto py-1 px-2 flex-grow justify-start sm:justify-center">
+                    <!-- Dynamic 20 pill buttons -->
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button type="button" onclick="jumpToQuestion(Math.max(0, currentQuestionIndex-1))" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 rounded-xl border border-slate-700">Prev</button>
+                    <button type="button" onclick="jumpToQuestion(Math.min(19, currentQuestionIndex+1))" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 rounded-xl border border-slate-700">Next</button>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- 2-Minute Break Session Modal -->
+    <div id="break-modal" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md p-4 space-y-6">
+        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 sm:p-8 text-center space-y-6 border border-cyan-500/40 shadow-2xl">
+            <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center mx-auto text-3xl">
+                <i class="fa-solid fa-mug-hot"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-2xl font-black text-white">Section Completed! Take a 2-Min Break</h3>
+                <p class="text-xs text-slate-300">Rest your eyes before moving to the next section of the dMAT exam.</p>
+            </div>
+
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 max-w-xs mx-auto">
+                <span class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Break Time Remaining:</span>
+                <span id="break-timer-display" class="text-4xl font-mono font-black text-cyan-400">02:00</span>
+            </div>
+
+            <button onclick="skipBreak()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-brand-600 hover:opacity-95 text-white font-extrabold text-base rounded-xl shadow-lg transition">
+                Skip Break & Continue to Next Section →
+            </button>
+        </div>
+    </div>
+
+    <!-- Final Submission Confirmation Modal -->
+    <div id="final-submit-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4">
+        <div class="glass-panel rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center space-y-6 border border-amber-500/40">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-2xl font-black text-white">Do you submit the test?</h3>
+                <p class="text-xs text-slate-300">Are you sure you want to finish the official dMAT test? Your answers will be graded immediately.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                <button onclick="closeModal('final-submit-modal')" class="w-full sm:w-1/2 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl border border-slate-700 text-sm">
+                    Review Answers
+                </button>
+                <button onclick="handleFinalSubmitConfirm()" class="w-full sm:w-1/2 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-95 text-white font-extrabold rounded-xl shadow-lg text-sm">
+                    Confirm Final Submission
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Test Results Analytics View -->
+    <div id="test-results-view" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950 p-4 sm:p-8 flex flex-col justify-center items-center">
+        <div class="glass-panel max-w-4xl w-full p-6 sm:p-10 rounded-3xl shadow-2xl border border-emerald-500/40 space-y-8 my-auto">
+            
+            <div class="text-center space-y-3">
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold uppercase">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span>Official dMAT Test Completed</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">Test Results & Analytics</h2>
+                <p class="text-xs sm:text-sm text-slate-300">Here is your official performance breakdown across all 3 exam sections.</p>
+            </div>
+
+            <!-- Main Performance Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Total Questions</span>
+                    <span id="res-total-qs" class="text-2xl sm:text-3xl font-black text-white">60</span>
+                </div>
+
+                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Answered</span>
+                    <span id="res-answered-qs" class="text-2xl sm:text-3xl font-black text-cyan-400">0</span>
+                </div>
+
+                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Correct</span>
+                    <span id="res-correct-qs" class="text-2xl sm:text-3xl font-black text-emerald-400">0</span>
+                </div>
+
+                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Wrong / Missed</span>
+                    <span id="res-wrong-qs" class="text-2xl sm:text-3xl font-black text-rose-400">0</span>
+                </div>
+            </div>
+
+            <!-- Percentage Banner -->
+            <div class="glass-card p-6 rounded-2xl border border-amber-500/40 text-center space-y-2 bg-gradient-to-r from-amber-950/40 via-slate-900 to-brand-950/40">
+                <span class="block text-xs uppercase font-extrabold tracking-widest text-amber-400">Overall Accuracy & Score:</span>
+                <span id="res-percentage" class="text-4xl sm:text-6xl font-black text-amber-400">0%</span>
+            </div>
+
+            <!-- Section-by-Section Breakdown -->
+            <div class="space-y-3">
+                <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Section Breakdown:</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-1">
+                        <span class="block text-xs font-bold text-brand-400">1. Latin Square Matrix</span>
+                        <span id="res-latin-breakdown" class="text-sm font-extrabold text-white">0 / 20 correct</span>
+                    </div>
+
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-1">
+                        <span class="block text-xs font-bold text-accent-cyan">2. Math Equations System</span>
+                        <span id="res-math-breakdown" class="text-sm font-extrabold text-white">0 / 20 correct</span>
+                    </div>
+
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-1">
+                        <span class="block text-xs font-bold text-amber-400">3. Figure Sequence Engine</span>
+                        <span id="res-figure-breakdown" class="text-sm font-extrabold text-white">0 / 20 correct</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation back to Home Page -->
+            <div class="pt-4 text-center">
+                <a href="/dashboard" class="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-brand-600 via-indigo-600 to-accent-cyan hover:opacity-95 text-white font-extrabold text-lg rounded-2xl shadow-xl shadow-brand-500/30 transition transform hover:scale-105">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Go to Home Page</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/test.js"></script>
+</body>
+</html>

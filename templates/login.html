@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | dMAT Exam Portal 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-center items-center font-sans p-4">
+
+    <div class="glass-panel rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-700/80 space-y-6">
+        <div class="text-center space-y-2">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 via-accent-cyan to-accent-purple flex items-center justify-center mx-auto text-white text-xl shadow-lg">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h2 class="text-2xl font-extrabold text-white">Sign In to dMAT Portal</h2>
+            <p class="text-xs text-slate-400">Access your Candidate Dashboard & Exam Practice</p>
+        </div>
+
+        <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">Username</label>
+                <div class="relative">
+                    <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                    <input type="text" id="login-username" required placeholder="Enter your username"
+                        class="w-full bg-slate-900/80 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-brand-500 transition">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase text-slate-300 mb-1.5">Password</label>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                    <input type="password" id="login-password" required placeholder="Enter your password"
+                        class="w-full bg-slate-900/80 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-brand-500 transition">
+                </div>
+            </div>
+
+            <div id="login-error" class="hidden text-xs text-rose-400 font-semibold p-2.5 bg-rose-950/40 rounded-lg border border-rose-800/40"></div>
+
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold rounded-xl transition shadow-lg shadow-brand-500/25 text-base">
+                Sign In
+            </button>
+        </form>
+
+        <div class="text-center pt-2 border-t border-slate-800 text-xs text-slate-400">
+            Don't have an account? <a href="/register" class="text-brand-400 hover:underline font-bold">Create Account</a>
+        </div>
+    </div>
+
+    <script src="/static/js/auth.js"></script>
+</body>
+</html>
