@@ -215,7 +215,7 @@ function renderCurrentQuestion() {
                 <!-- Group 1 -->
                 <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/70 space-y-2">
                     <span class="block text-xs font-bold text-amber-400">Choose Missing Figure 5:</span>
-                    <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-2 gap-2">
                         ${q.options_1.map((imgUrl, idx) => `
                             <button type="button" onclick="selectTestFigureOption(1, ${idx+1})" class="test-fig-opt-1 bg-slate-950 border-2 ${savedAns.ans1 === idx+1 ? 'border-amber-400 ring-2 ring-amber-400/50 bg-amber-950/80' : 'border-slate-700'} rounded-xl p-1.5 flex flex-col items-center">
                                 <div class="w-full aspect-square bg-white rounded-lg p-1 border border-slate-300 mb-1">
@@ -230,7 +230,7 @@ function renderCurrentQuestion() {
                 <!-- Group 2 -->
                 <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/70 space-y-2">
                     <span class="block text-xs font-bold text-indigo-400">Choose Missing Figure 6:</span>
-                    <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-2 gap-2">
                         ${q.options_2.map((imgUrl, idx) => `
                             <button type="button" onclick="selectTestFigureOption(2, ${idx+1})" class="test-fig-opt-2 bg-slate-950 border-2 ${savedAns.ans2 === idx+1 ? 'border-indigo-400 ring-2 ring-indigo-400/50 bg-indigo-950/80' : 'border-slate-700'} rounded-xl p-1.5 flex flex-col items-center">
                                 <div class="w-full aspect-square bg-white rounded-lg p-1 border border-slate-300 mb-1">

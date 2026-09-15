@@ -33,7 +33,65 @@ def init_db():
                 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
             )
         ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS comments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_name TEXT NOT NULL,
+                rating INTEGER,
+                comment TEXT DEFAULT '',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
         conn.commit()
+
+def add_comment(user_name, rating, comment):
+    user_name = (user_name or '').strip() or "Anonymous Candidate"
+    comment = (comment or '').strip()
+    
+    validated_rating = None
+    if rating is not None and rating != '' and rating != 0 and str(rating) != '0':
+        try:
+            r_val = int(rating)
+            if 1 <= r_val <= 5:
+                validated_rating = r_val
+            else:
+                return False, "Rating must be between 1 and 5 stars."
+        except (ValueError, TypeError):
+            return False, "Invalid rating value."
+
+    if validated_rating is None and not comment:
+        return False, "Please provide at least a star rating or a comment."
+
+    try:
+        with get_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO comments (user_name, rating, comment) VALUES (?, ?, ?)", (user_name, validated_rating, comment))
+            conn.commit()
+            return True, "Feedback submitted successfully!"
+    except Exception as e:
+        return False, f"Database error: {str(e)}"
+
+def get_comments():
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, user_name, rating, comment, strftime('%Y-%m-%d %H:%M', created_at) as created_at FROM comments ORDER BY id DESC")
+        rows = cursor.fetchall()
+        comments = [dict(r) for r in rows]
+        
+        total = len(comments)
+        rated_comments = [c for c in comments if c['rating'] is not None]
+        rating_count = len(rated_comments)
+        if rating_count > 0:
+            avg_rating = round(sum(c['rating'] for c in rated_comments) / rating_count, 1)
+        else:
+            avg_rating = 0.0
+            
+        return {
+            "comments": comments,
+            "total_count": total,
+            "rating_count": rating_count,
+            "avg_rating": avg_rating
+        }
 
 def register_user(username, password):
     username = username.strip()

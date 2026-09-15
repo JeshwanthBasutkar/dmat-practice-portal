@@ -299,7 +299,7 @@ def _mutate_symbol(s: Symbol, kind: str) -> Symbol:
     return ns
 
 def make_distractors(correct: State, difficulty="random") -> List[State]:
-    """Create six plausible options with exactly one copy of the correct state."""
+    """Create four plausible options with exactly one copy of the correct state."""
     if difficulty == "low":
         mutation_pool=["position","position","one_step","orientation","colour","fill"]
     elif difficulty == "medium":
@@ -311,7 +311,7 @@ def make_distractors(correct: State, difficulty="random") -> List[State]:
     options=[]
     seen={str(correct)}
     attempts=0
-    while len(options)<5 and attempts<1000:
+    while len(options)<3 and attempts<1000:
         attempts+=1
         mut=random.choice(mutation_pool)
         syms=list(correct.symbols)
@@ -331,10 +331,10 @@ def make_distractors(correct: State, difficulty="random") -> List[State]:
             seen.add(str(candidate))
             options.append(candidate)
 
-    # Deterministic fallback guarantees six options.
+    # Deterministic fallback guarantees four options (3 distractors + 1 correct).
     fallback_types=["position","orientation","colour","fill","shape"]
     k=0
-    while len(options)<5:
+    while len(options)<3:
         syms=list(correct.symbols)
         idx=k%max(1,len(syms))
         if syms:
@@ -646,7 +646,7 @@ def save_question(q, prefix="dmat_question"):
         gy=y0 + group_idx*(2*(BOARD+32)+18)
         d.text((gx,gy-20),f"Missing Figure {group_idx+5}",fill=LINE)
         for i,st in enumerate(options):
-            rr,cc=divmod(i,3)
+            rr,cc=divmod(i,2)
             x=gx+cc*(BOARD+18)
             y=gy+rr*(BOARD+32)
             im.paste(render_state(st),(x,y))
@@ -781,7 +781,7 @@ def launch_gui():
                 image_refs.append(photo)
                 b = tk.Button(frame, image=photo, text=str(i+1), compound="top",
                               bg="white", command=lambda j=i, g=group, bs=btns: select(g,j,bs))
-                b.grid(row=i//3, column=i%3, padx=5, pady=5)
+                b.grid(row=i//2, column=i%2, padx=5, pady=5)
                 btns.append(b)
             buttons_by_group.append(btns)
 

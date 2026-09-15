@@ -9,7 +9,8 @@ from math_generator import generate_math_system
 from dmat_figure_sequence_master import generate_question, render_state
 from database import (
     init_db, register_user, verify_user, 
-    get_user_stats, update_user_stats, get_leaderboard
+    get_user_stats, update_user_stats, get_leaderboard,
+    add_comment, get_comments
 )
 
 def state_to_data_url(state):
@@ -440,6 +441,35 @@ def leaderboard():
     """Returns top players ranking."""
     top_players = get_leaderboard(limit=10)
     return jsonify({'leaderboard': top_players})
+
+# --- RATINGS & COMMENTS ROUTES ---
+
+@app.route('/api/comments', methods=['GET'])
+def fetch_comments():
+    """Returns all candidate ratings and comments with average statistics."""
+    data = get_comments()
+    return jsonify({'success': True, **data})
+
+@app.route('/api/comments', methods=['POST'])
+def submit_comment():
+    """Submits a new candidate rating and comment."""
+    data = request.get_json() or {}
+    user_name = data.get('user_name', '')
+    if 'username' in session and not user_name:
+        user_name = session['username']
+    rating = data.get('rating')
+    comment = data.get('comment', '')
+
+    success, message = add_comment(user_name, rating, comment)
+    if success:
+        updated_data = get_comments()
+        return jsonify({
+            'success': True,
+            'message': message,
+            **updated_data
+        })
+    else:
+        return jsonify({'success': False, 'message': message}), 400
 
 if __name__ == '__main__':
     print("Starting dMAT Logic Arena server on http://127.0.0.1:5000 ...")
